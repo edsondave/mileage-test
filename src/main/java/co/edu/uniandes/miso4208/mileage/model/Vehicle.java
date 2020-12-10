@@ -1,5 +1,8 @@
 package co.edu.uniandes.miso4208.mileage.model;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class Vehicle {
 
     private String title;
@@ -7,9 +10,12 @@ public class Vehicle {
     private String make;
     private String model;
     private String description;
+    private VehicleType vehicleType;
     private DistanceUnit distanceUnit;
-    private VolumenUnit volumenUnit;
+    private VolumenUnit volumeUnit;
+    private EfficiencyUnit efficiencyUnit;
     private String currencySymbol;
+    private List<FillUp> fillUps = new LinkedList <>();
 
     public String getTitle() {
         return title;
@@ -51,12 +57,12 @@ public class Vehicle {
         this.distanceUnit = distanceUnit;
     }
 
-    public VolumenUnit getVolumenUnit() {
-        return volumenUnit;
+    public VolumenUnit getVolumeUnit() {
+        return volumeUnit;
     }
 
-    public void setVolumenUnit(VolumenUnit volumenUnit) {
-        this.volumenUnit = volumenUnit;
+    public void setVolumeUnit(VolumenUnit volumeUnit) {
+        this.volumeUnit = volumeUnit;
     }
 
     public String getCurrencySymbol() {
@@ -74,4 +80,29 @@ public class Vehicle {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public VehicleType getVehicleType() {
+        return vehicleType;
+    }
+
+    public void setVehicleType(VehicleType vehicleType) {
+        this.vehicleType = vehicleType;
+    }
+
+    public EfficiencyUnit getEfficiencyUnit() {
+        return efficiencyUnit;
+    }
+
+    public void setEfficiencyUnit(EfficiencyUnit efficiencyUnit) {
+        this.efficiencyUnit = efficiencyUnit;
+    }
+
+    public List <FillUp> getFillUps() {
+        return fillUps;
+    }
+
+    public void setFillUps(List <FillUp> fillUps) {
+        this.fillUps = fillUps;
+    }
+
 }

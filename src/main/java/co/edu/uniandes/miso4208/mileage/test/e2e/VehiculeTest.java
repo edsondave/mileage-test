@@ -20,12 +20,20 @@ public class VehiculeTest extends AbstractTest {
     public static final String TYPE_SELECT_ID = "com.evancharlton.mileage:id/type";
     public static final String DISTANCE_UNIT_ID = "com.evancharlton.mileage:id/distance";
     public static final String VOLUME_UNIT_ID = "com.evancharlton.mileage:id/volume";
-    public static final String ECONOMY_UNIT_ID = "com.evancharlton.mileage:id/economy";
+    public static final String EFFICIENCY_UNIT_ID = "com.evancharlton.mileage:id/economy";
     public static final String CURRENCY_SYMBOL_FIELD_ID = "com.evancharlton.mileage:id/currency";
     public static final String ADD_VEHICLE_BUTTON_ID = "com.evancharlton.mileage:id/save_btn";
     public static final String TABS_BAR_ID = "android:id/tabs";
     public static final String LIST_ID = "android:id/list";
     public static final String LIST_ITEM_CLASS_NAME = "android.widget.TwoLineListItem";
+
+    @Test
+    public void loadDefaultVehicleTest() {
+
+        goToVehicleTab();
+        verifyVehiclesInList();
+
+    }
 
     @Test
     public void createVehicleTest() {
@@ -39,7 +47,7 @@ public class VehiculeTest extends AbstractTest {
 
         createVehicle(vehicle);
 
-        Assert.assertTrue(verifyVehicleInList(vehicle));
+        verifyVehiclesInList();
 
     }
 
@@ -50,6 +58,7 @@ public class VehiculeTest extends AbstractTest {
         fillVehicleForm(vehicle);
         click(ADD_VEHICLE_BUTTON_ID);
         waitVisibility(TABS_BAR_ID);
+        vehicles.add(vehicle);
         takeSnapshot("after-create-vehicle");
     }
 
@@ -72,6 +81,19 @@ public class VehiculeTest extends AbstractTest {
         type(vehicle.getDescription(), DESCRIPTION_FIELD_ID);
     }
 
+    private void verifyVehiclesInList() {
+        List <WebElement> listItems = driver.findElementsByClassName(LIST_ITEM_CLASS_NAME);
+
+        Assert.assertEquals(listItems.size(), vehicles.size());
+
+        for (int i = 0; i < listItems.size(); i++) {
+            Vehicle vehicle = vehicles.get(i);
+            List <WebElement> textViews = listItems.get(i).findElements(By.className("android.widget.TextView"));
+            Assert.assertEquals(textViews.get(0).getText(), vehicle.getTitle());
+            Assert.assertEquals(textViews.get(1).getText(), vehicle.getDescription());
+        }
+    }
+
     private boolean verifyVehicleInList(Vehicle vehicle) {
         List <WebElement> listItems = driver.findElementsByClassName(LIST_ITEM_CLASS_NAME);
         for (int i = 0; i < listItems.size(); i++) {
@@ -83,6 +105,5 @@ public class VehiculeTest extends AbstractTest {
         }
         return false;
     }
-
 
 }

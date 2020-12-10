@@ -1,46 +1,39 @@
 package co.edu.uniandes.miso4208.mileage.model;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class FillUp {
 
-    Vehicle vehicle;
-    BigDecimal pricePerGallons;
-    BigDecimal gallons;
+    BigDecimal pricePerVolume;
+    BigDecimal volume;
     BigDecimal odometer;
-    Boolean isFull;
+    Date date;
+    Boolean isPartial;
     String comment;
 
-    public Vehicle getVehicle() {
-        return vehicle;
+    public BigDecimal getPricePerVolume() {
+        return pricePerVolume;
     }
 
-    public void setVehicle(Vehicle vehicle) {
-        this.vehicle = vehicle;
+    public void setPricePerVolume(BigDecimal pricePerVolume) {
+        this.pricePerVolume = pricePerVolume;
     }
 
-    public BigDecimal getPricePerGallons() {
-        return pricePerGallons;
+    public BigDecimal getVolume() {
+        return volume;
     }
 
-    public void setPricePerGallons(BigDecimal pricePerGallons) {
-        this.pricePerGallons = pricePerGallons;
+    public void setVolume(BigDecimal volume) {
+        this.volume = volume;
     }
 
-    public BigDecimal getGallons() {
-        return gallons;
+    public Boolean getPartial() {
+        return isPartial;
     }
 
-    public void setGallons(BigDecimal gallons) {
-        this.gallons = gallons;
-    }
-
-    public Boolean getFull() {
-        return isFull;
-    }
-
-    public void setFull(Boolean full) {
-        isFull = full;
+    public void setPartial(Boolean full) {
+        isPartial = full;
     }
 
     public String getComment() {
@@ -58,4 +51,13 @@ public class FillUp {
     public void setOdometer(BigDecimal odometer) {
         this.odometer = odometer;
     }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
 }

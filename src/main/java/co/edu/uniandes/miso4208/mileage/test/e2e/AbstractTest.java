@@ -1,5 +1,7 @@
 package co.edu.uniandes.miso4208.mileage.test.e2e;
 
+import co.edu.uniandes.miso4208.mileage.model.Vehicle;
+import co.edu.uniandes.miso4208.mileage.model.VehicleType;
 import co.edu.uniandes.miso4208.mileage.test.TestConfiguration;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.nativekey.AndroidKey;
@@ -18,18 +20,21 @@ import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.text.DecimalFormat;
+import java.util.LinkedList;
+import java.util.List;
 
 public abstract class AbstractTest {
 
     private final String DEVICE_NAME = "Android Emulator";
     private final String AUTOMATION_NAME = "UiAutomator2";
     private final String APP_WAIT_ACTIVITY = "com.evancharlton.mileage.Mileage";
+    private final String DEFAULT_TIMEOUTS = "60000";
     protected final PodamFactory PODAM_FACTORY = new PodamFactoryImpl();
 
     protected AndroidDriver<WebElement> driver;
     protected WebDriverWait wait;
+    protected List<Vehicle> vehicles;
 
     @BeforeClass
     public void setUp() throws IOException {
@@ -41,9 +46,13 @@ public abstract class AbstractTest {
         capabilities.setCapability("automationName", AUTOMATION_NAME);
         capabilities.setCapability("app", config.getAppUnderTestPath());
         capabilities.setCapability("appWaitActivity", APP_WAIT_ACTIVITY);
+        capabilities.setCapability("adbExecTimeout", DEFAULT_TIMEOUTS);
+        capabilities.setCapability("uiautomator2ServerLaunchTimeout", DEFAULT_TIMEOUTS);
 
         driver = new AndroidDriver<>(config.getAppiumServerUrl(), capabilities);
         wait = new WebDriverWait(driver, 2);
+
+        loadDefault();
 
     }
 
@@ -52,8 +61,26 @@ public abstract class AbstractTest {
         driver.quit();
     }
 
-    public URL getServiceUrl () throws MalformedURLException {
-        return new URL("http://localhost:4723/wd/hub");
+    private void loadDefault() {
+
+        VehicleType defaultVehicleType = new VehicleType();
+        defaultVehicleType.setTitle("Car");
+        defaultVehicleType.setDescription("Passenger car");
+
+        Vehicle defaultVehicle = new Vehicle();
+        defaultVehicle.setTitle("Default vehicle");
+        defaultVehicle.setYear(2010);
+        defaultVehicle.setMake("Android");
+        defaultVehicle.setModel("Mileage");
+        defaultVehicle.setDescription("Auto-generated vehicle");
+        defaultVehicle.setVehicleType(defaultVehicleType);
+        defaultVehicle.setCurrencySymbol("$");
+
+        List <Vehicle> vehicles = new LinkedList<>();
+        vehicles.add(defaultVehicle);
+
+        this.vehicles = vehicles;
+
     }
 
     public void waitAndClick(String id) {
