@@ -2,6 +2,8 @@ package co.edu.uniandes.miso4208.mileage.test.e2e;
 
 import co.edu.uniandes.miso4208.mileage.model.FillUp;
 import co.edu.uniandes.miso4208.mileage.model.Vehicle;
+import io.appium.java_client.TouchAction;
+import io.appium.java_client.touch.offset.PointOption;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -22,6 +24,33 @@ public class FillUpTest extends AbstractTest {
     public static final String PARTIAL_CHECKBOX_FIELD_ID = "com.evancharlton.mileage:id/partial";
     public static final String COMMENT_FIELD_XPATH = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TabHost/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.LinearLayout/android.widget.EditText";
     public static final String SAVE_BUTTON_ID = "com.evancharlton.mileage:id/save_btn";
+    public static final String EXPECTED_STATISTICS[][] = {
+            {"Average fuel economy", "26.67 mpg"},
+            {"Worst fuel economy", "22.22 mpg"},
+            {"Best fuel economy", "33.33 mpg"},
+            {"Average distance", "100.00 mi"},
+            {"Minimum distance", "100.00 mi"},
+            {"Maximum distance", "100.00 mi"},
+            {"Average cost", "$18.83"},
+            {"Minimum cost", "$12.00"},
+            {"Maximum cost", "$27.00"},
+            {"Total cost", "$56.50"},
+            {"Cost last month", "$39.00"},
+            {"Estimated cost per month", "$1695.00 / mo"},
+            {"Cost last year", "$39.00"},
+            {"Estimated cost per year", "$20622.50 / yr"},
+            {"Average cost per mi", "$0.20 / mi"},
+            {"Minimum cost per mi", "$0.12 / mi"},
+            {"Maximum cost per mi", "$0.27 / mi"},
+            {"Average price", "$4.50"},
+            {"Minimum price", "$3.50"},
+            {"Maximum price", "$6.00"},
+            {"Smallest fillup", "3.00 Gallons"},
+            {"Largest fillup", "5.00 Gallons"},
+            {"Average fillup", "4.17 Gallons"},
+            {"Total fuel", "12.50 Gallons"},
+            {"Fuel per year", "4562.50 Gallons / yr"}
+    };
 
     @Test
     public void registerFillUpTest() {
@@ -111,137 +140,45 @@ public class FillUpTest extends AbstractTest {
             FillUp fillUp = fillUps.get(listItems.size() - i - 1);
 
             Assert.assertEquals(listItems.get(i).findElement(By.id("com.evancharlton.mileage:id/volume")).getText(),
-                    String.format( "%.2f", fillUp.getVolume()) + " g");
+                    String.format( "%.2f", fillUp.getVolume()).replace(',', '.') + " g");
 
             Assert.assertEquals(listItems.get(i).findElement(By.id("com.evancharlton.mileage:id/price")).getText(),
-                    String.format( "%.2f", fillUp.getPricePerVolume()));
+                    String.format( "%.2f", fillUp.getPricePerVolume()).replace(',', '.'));
 
         }
 
     }
 
     private void verifyStatistics() {
-        List <WebElement> listItems = driver.findElementsByXPath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TabHost/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.ListView/android.widget.LinearLayout");
 
-        // 0
-        Assert.assertEquals(listItems.get(0).findElement(By.id("android:id/text1")).getText(),
-                "Average fuel economy");
+        List <WebElement> listItems = driver.findElementsByXPath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TabHost/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.ListView/android.widget.LinearLayout");;
 
-        Assert.assertEquals(listItems.get(0).findElement(By.id("android:id/text2")).getText(),
-                "26.67 mpg");
+        int i = 0;
+        for (String expectedParameter[]: EXPECTED_STATISTICS) {
 
-        // 1
-        Assert.assertEquals(listItems.get(1).findElement(By.id("android:id/text1")).getText(),
-                "Worst fuel economy");
+            WebElement item = listItems.get(i++);
+            Assert.assertEquals(item.findElement(By.id("android:id/text1")).getText(), expectedParameter[0]);
+            Assert.assertEquals(item.findElement(By.id("android:id/text2")).getText(), expectedParameter[1]);
 
-        Assert.assertEquals(listItems.get(1).findElement(By.id("android:id/text2")).getText(),
-                "22.22 mpg");
+            if (i == listItems.size()) {
+                swipeUp();
+                listItems = driver.findElementsByXPath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.TabHost/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.ListView/android.widget.LinearLayout");
+                i = 0;
+                do {
+                    item = listItems.get(i++);
+                } while(!item.findElement(By.id("android:id/text1")).getText().equals(expectedParameter[0]));
+            }
 
-        // 2
-        Assert.assertEquals(listItems.get(2).findElement(By.id("android:id/text1")).getText(),
-                "Best fuel economy");
+        }
 
-        Assert.assertEquals(listItems.get(2).findElement(By.id("android:id/text2")).getText(),
-                "33.33 mpg");
+    }
 
-        // 3
-        Assert.assertEquals(listItems.get(3).findElement(By.id("android:id/text1")).getText(),
-                "Average distance");
-
-        Assert.assertEquals(listItems.get(3).findElement(By.id("android:id/text2")).getText(),
-                "100.00 mi");
-
-        // 4
-        Assert.assertEquals(listItems.get(4).findElement(By.id("android:id/text1")).getText(),
-                "Minimum distance");
-
-        Assert.assertEquals(listItems.get(4).findElement(By.id("android:id/text2")).getText(),
-                "100.00 mi");
-
-        // 5
-        Assert.assertEquals(listItems.get(5).findElement(By.id("android:id/text1")).getText(),
-                "Maximum distance");
-
-        Assert.assertEquals(listItems.get(5).findElement(By.id("android:id/text2")).getText(),
-                "100.00 mi");
-
-        // 6
-        Assert.assertEquals(listItems.get(6).findElement(By.id("android:id/text1")).getText(),
-                "Average cost");
-
-        Assert.assertEquals(listItems.get(6).findElement(By.id("android:id/text2")).getText(),
-                "$18.83");
-
-        // 7
-        Assert.assertEquals(listItems.get(7).findElement(By.id("android:id/text1")).getText(),
-                "Minimum cost");
-
-        Assert.assertEquals(listItems.get(7).findElement(By.id("android:id/text2")).getText(),
-                "$12.00");
-
-        // 8
-        Assert.assertEquals(listItems.get(8).findElement(By.id("android:id/text1")).getText(),
-                "Maximum cost");
-
-        Assert.assertEquals(listItems.get(8).findElement(By.id("android:id/text2")).getText(),
-                "$27.00");
-
-        // 9
-        Assert.assertEquals(listItems.get(9).findElement(By.id("android:id/text1")).getText(),
-                "Total cost");
-
-        Assert.assertEquals(listItems.get(9).findElement(By.id("android:id/text2")).getText(),
-                "$56.50");
-
-        // 10
-        Assert.assertEquals(listItems.get(10).findElement(By.id("android:id/text1")).getText(),
-                "Cost last month");
-
-        Assert.assertEquals(listItems.get(10).findElement(By.id("android:id/text2")).getText(),
-                "$39.00");
-
-        // 11
-        Assert.assertEquals(listItems.get(11).findElement(By.id("android:id/text1")).getText(),
-                "Estimated cost per month");
-
-        Assert.assertEquals(listItems.get(11).findElement(By.id("android:id/text2")).getText(),
-                "$1695.00 / mo");
-
-        // 12
-        Assert.assertEquals(listItems.get(12).findElement(By.id("android:id/text1")).getText(),
-                "Cost last year");
-
-        Assert.assertEquals(listItems.get(12).findElement(By.id("android:id/text2")).getText(),
-                "$39.00");
-
-        // 13
-        Assert.assertEquals(listItems.get(13).findElement(By.id("android:id/text1")).getText(),
-                "Estimated cost per year");
-
-        Assert.assertEquals(listItems.get(13).findElement(By.id("android:id/text2")).getText(),
-                "$20622.50 / yr");
-
-        // 14
-        Assert.assertEquals(listItems.get(14).findElement(By.id("android:id/text1")).getText(),
-                "Average cost per mi");
-
-        Assert.assertEquals(listItems.get(14).findElement(By.id("android:id/text2")).getText(),
-                "$0.20 / mi");
-
-        // 15
-        Assert.assertEquals(listItems.get(15).findElement(By.id("android:id/text1")).getText(),
-                "Minimum cost per mi");
-
-        Assert.assertEquals(listItems.get(15).findElement(By.id("android:id/text2")).getText(),
-                "$0.12 / mi");
-
-        // 16
-        Assert.assertEquals(listItems.get(16).findElement(By.id("android:id/text1")).getText(),
-                "Maximum cost per mi");
-
-        Assert.assertEquals(listItems.get(16).findElement(By.id("android:id/text2")).getText(),
-                "$0.27 / mi");
-
+    private void swipeUp() {
+        new TouchAction(driver)
+                .press(PointOption.point(160, 500))
+                .moveTo(PointOption.point(160, 150))
+                .release()
+                .perform();
     }
 
 }

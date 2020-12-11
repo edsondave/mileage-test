@@ -58,6 +58,7 @@ public abstract class AbstractTest {
 
     @AfterClass
     public void tearDown() {
+        driver.removeApp("com.evancharlton.mileage");
         driver.quit();
     }
 
@@ -97,6 +98,10 @@ public abstract class AbstractTest {
 
     public void pressMenu() {
         driver.pressKey(new KeyEvent(AndroidKey.MENU));
+    }
+
+    public void pressPageDown() {
+        driver.pressKey(new KeyEvent(AndroidKey.PAGE_UP));
     }
 
     public void waitASecond() {
