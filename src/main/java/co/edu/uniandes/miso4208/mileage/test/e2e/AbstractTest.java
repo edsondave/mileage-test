@@ -15,12 +15,9 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-import uk.co.jemos.podam.api.PodamFactory;
-import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -29,8 +26,7 @@ public abstract class AbstractTest {
     private final String DEVICE_NAME = "Android Emulator";
     private final String AUTOMATION_NAME = "UiAutomator2";
     private final String APP_WAIT_ACTIVITY = "com.evancharlton.mileage.Mileage";
-    private final String DEFAULT_TIMEOUTS = "60000";
-    protected final PodamFactory PODAM_FACTORY = new PodamFactoryImpl();
+    private final String DEFAULT_TIMEOUTS = "20000";
 
     protected AndroidDriver<WebElement> driver;
     protected WebDriverWait wait;
