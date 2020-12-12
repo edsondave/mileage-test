@@ -58,7 +58,7 @@ public abstract class AbstractTest {
 
     @AfterClass
     public void tearDown() {
-        driver.removeApp("com.evancharlton.mileage");
+        // driver.removeApp("com.evancharlton.mileage");
         driver.quit();
     }
 
@@ -119,6 +119,10 @@ public abstract class AbstractTest {
     public void typeByXpath(String text, String xpath) {
         WebElement field = driver.findElementByXPath(xpath);
         field.sendKeys(text);
+    }
+
+    public void goBack() {
+        driver.pressKey(new KeyEvent(AndroidKey.BACK));
     }
 
     public void click(String id) {

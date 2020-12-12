@@ -11,6 +11,9 @@ public class FillUp {
     Date date;
     Boolean isPartial;
     String comment;
+    String day;
+    String month;
+    String year;
 
     public BigDecimal getPricePerVolume() {
         return pricePerVolume;
@@ -58,6 +61,30 @@ public class FillUp {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getDay() {
+        return day;
+    }
+
+    public void setDay(String day) {
+        this.day = day;
+    }
+
+    public String getMonth() {
+        return month;
+    }
+
+    public void setMonth(String month) {
+        this.month = month;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
     }
 
 }
