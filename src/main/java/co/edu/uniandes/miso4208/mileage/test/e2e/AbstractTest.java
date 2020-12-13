@@ -54,7 +54,7 @@ public abstract class AbstractTest {
 
     @AfterClass
     public void tearDown() {
-        // driver.removeApp("com.evancharlton.mileage");
+        driver.removeApp("com.evancharlton.mileage");
         driver.quit();
     }
 

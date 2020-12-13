@@ -121,8 +121,6 @@ public class FillUpTest extends AbstractTest {
 
         verifyFillUpsInHistory(vehicle);
 
-        takeSnapshot("history");
-
     }
 
     @Test(dependsOnMethods = "registerFillUpTest")
@@ -151,9 +149,9 @@ public class FillUpTest extends AbstractTest {
     public void statisticsTest() {
         goToStatisticsTab();
 
-        verifyStatistics();
-
         takeSnapshot("statistics");
+
+        verifyStatistics();
 
     }
 
@@ -180,9 +178,9 @@ public class FillUpTest extends AbstractTest {
     }
 
     private void fillFillUpForm(FillUp fillUp) {
-        type(fillUp.getPricePerVolume().toString(), UNIT_PRICE_FIELD_ID);
-        type(fillUp.getVolume().toString(), AMOUNT_FIELD_ID);
-        type(fillUp.getOdometer().toString(), ODOMETER_FIELD_ID);
+        type(fillUp.getPricePerVolume().toString().replace(',','.'), UNIT_PRICE_FIELD_ID);
+        type(fillUp.getVolume().toString().replace(',','.'), AMOUNT_FIELD_ID);
+        type(fillUp.getOdometer().toString().replace(',','.'), ODOMETER_FIELD_ID);
         typeByXpath(fillUp.getComment(), COMMENT_FIELD_XPATH);
 
         click("com.evancharlton.mileage:id/date");
@@ -228,6 +226,8 @@ public class FillUpTest extends AbstractTest {
                     String.format( "%.2f", fillUp.getPricePerVolume()).replace(',', '.'));
 
         }
+
+        takeSnapshot("history");
 
         verifyFristHistory();
 
